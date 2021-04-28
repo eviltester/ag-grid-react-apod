@@ -158,6 +158,8 @@ const App = () => {
         <a href="https://www.ag-grid.com/" target="_blank">
           AG Grid (Community Edition)
         </a>
+        . - <a href="https://github.com/eviltester/ag-grid-react-apod" target="_blank">src @ github</a>
+
       </p>
     </div>
   );
