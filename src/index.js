@@ -1,139 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { render } from "react-dom";
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-const App = () => {
-  const [gridApi, setGridApi] = useState(null);
-  const [gridColumnApi, setGridColumnApi] = useState(null);
-
-  const [rowData, setRowData] = useState([]);
-
-  useEffect(() => {
-    refreshData();
-  }, []);
-
-  function onGridReady(params) {
-    setGridApi(params.api);
-    setGridColumnApi(params.columnApi);
-  }
-
-  const refreshData = e => {
-    fetch(
-      "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=15&thumbs=true"
-    )
-      .then(result => result.json())
-      .then(rowData => setRowData(rowData));
-  };
-  // todo: resize row on image load
-  // todo: store data in a memory model and add to data on 'get new pictures' to support client side pagination
-
-  return (
-    <div>
-      <h1>Random Nasa Pictures of the Day</h1>
-      <ul>
-        <li>Date is sortable</li>
-        <li>Date links to apod.nasa.gov page</li>
-        <li>Click on Image to see original</li>
-      </ul>
-      <button onClick={refreshData}>Get New Pictures</button>
-      <div className="ag-theme-alpine" style={{ height: 700, width: "100%" }}>
-        <AgGridReact onGridReady={onGridReady} rowData={rowData}>
-          <AgGridColumn
-            field="date"
-            width="120"
-            sortable={true}
-            cellRenderer={function(params) {
-              const mydateVals = params.value.split("-");
-              var myurl =
-                "https://apod.nasa.gov/apod/" +
-                "ap" +
-                mydateVals[0].substr(-2, 2) +
-                mydateVals[1] +
-                mydateVals[2] +
-                ".html";
-              return (
-                "<a href='" +
-                myurl +
-                "' target='_blank'>" +
-                params.value +
-                "</a>"
-              );
-            }}
-          />
-          <AgGridColumn
-            field="explanation"
-            autoHeight={true}
-            wrapText={true}
-            filter="agTextColumnFilter"
-            resizable={true}
-            width={400}
-            cellRenderer={function(params) {
-              return (
-                "<div style='word-break:normal;line-height: normal'><p>" +
-                params.value +
-                "</p></div>"
-              );
-            }}
-          />
-
-          <AgGridColumn
-            field="url"
-            flex="1"
-            autoHeight={true}
-            cellRenderer={function(params) {
-              if (params.node.data.media_type == "image") {
-                return (
-                  "<a href='" +
-                  params.value +
-                  "' target='_blank'><!--'max-width:100%; height:auto' -->" +
-                  "<img style='height:100%' src='" +
-                  params.value +
-                  "'" +
-                  "alt='" +
-                  params.node.data.title +
-                  "'/>" +
-                  "</a>"
-                );
-              }
-              if (params.node.data.media_type == "video") {
-                return (
-                  "<a href='" +
-                  params.value +
-                  "' target='_blank'>Watch Video Now<br><img  style='height:100%' src='" +
-                  params.node.data.thumbnail_url +
-                  "'/>" +
-                  "</a>"
-                );
-              }
-              return params.node.data.media_type;
-            }}
-          />
-        </AgGridReact>
-      </div>
-      <p>
-        <a href="https://apod.nasa.gov/apod/archivepix.html" target="_blank">
-          Visit full archive
-        </a>
-      </p>
-      <p>
-        Created with{" "}
-        <a href="https://api.nasa.gov/" target="_blank">
-          NASA's apod API
-        </a>
-        ,{" "}
-        <a href="https://reactjs.org/" target="_blank">
-          ReactJS
-        </a>
-        , and{" "}
-        <a href="https://www.ag-grid.com/" target="_blank">
-          AG Grid (Community Edition)
-        </a>
-      </p>
-    </div>
-  );
-};
-
-render(<App />, document.getElementById("root"));
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
