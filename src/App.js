@@ -38,7 +38,6 @@ const App = () => {
       .then(data => rowData.concat(data))
       .then(data => {document.querySelectorAll('.piccount').forEach((element)=> element.innerText="");return data;})
       .then(rowData => setRowData(rowData))
-      .then(gridApi?.hideOverlay())
       .catch(error => {console.log(error);document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");})
       ;
   };
