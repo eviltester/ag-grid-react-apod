@@ -26,7 +26,7 @@ const App = () => {
     document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Images...");
     
     fetch(
-      "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=15&thumbs=true"
+      "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=10&thumbs=true"
     )
       .then(response => {
         if(response.ok){
