@@ -27,7 +27,8 @@ const App = () => {
       .then(result => result.json())
       .then(rowData => setRowData(rowData));
   };
-  /* todo: resize row on image load*/
+  // todo: resize row on image load
+  // todo: store data in a memory model and add to data on 'get new pictures' to support client side pagination
 
   return (
     <div>
@@ -66,6 +67,7 @@ const App = () => {
             field="explanation"
             autoHeight={true}
             wrapText={true}
+            filter="agTextColumnFilter"
             resizable={true}
             width={400}
             cellRenderer={function(params) {
