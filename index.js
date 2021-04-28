@@ -66,6 +66,7 @@ const App = () => {
             field="explanation"
             autoHeight={true}
             wrapText={true}
+            filter="agTextColumnFilter"
             resizable={true}
             width={400}
             cellRenderer={function(params) {
