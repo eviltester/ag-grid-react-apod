@@ -14,5 +14,6 @@ The app shows a random selection of Apod images in an AG Grid (Community Edition
 Run locally after cloning with:
 
 ```
+npm install
 npm start
 ```
