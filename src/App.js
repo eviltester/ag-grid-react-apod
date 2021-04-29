@@ -42,6 +42,10 @@ const App = () => {
       ;
   };
 
+  const onColumnResized = (params) => {
+    params.api.resetRowHeights();
+  };
+
 // add loading overlay
 
   return (
@@ -55,15 +59,16 @@ const App = () => {
         <li>Filter on explanation</li>
       </ul>
       */}
-      <button onClick={refreshData}>Get More Pictures</button><span class="piccount"></span>
-      <div className="ag-theme-alpine" style={{ height: 700, width: "100%" }}>
+      <button onClick={refreshData}>Get More Pictures</button><span className="piccount"></span>
+      <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
         <AgGridReact onGridReady={onGridReady} rowData={rowData}
           pagination={true}
           paginationPageSize={10}
+          onColumnResized={onColumnResized}
         >
           <AgGridColumn
             field="date"
-            width="120"
+            width={120}
             sortable={true}
             resizable={true}
             cellRenderer={function(params) {
@@ -90,7 +95,7 @@ const App = () => {
             wrapText={true}
             filter="agTextColumnFilter"
             resizable={true}
-            width={400}
+            flex="2"
             cellRenderer={function(params) {
               return (
                 "<div style='word-break:normal;line-height: normal'><p>" +
@@ -103,15 +108,14 @@ const App = () => {
           <AgGridColumn
             field="url"
             flex="1"
-            autoHeight={true}
             headerName="Image"
             cellRenderer={function(params) {
               if (params.node.data.media_type == "image") {
                 return (
                   "<a href='" +
                   params.value +
-                  "' target='_blank'><!--'max-width:100%; height:auto' -->" +
-                  "<img style='height:100%' src='" +
+                  "' target='_blank'><!--style='max-width:100%; height:auto' -->" +
+                  "<img style='max-width:100%; height:auto' src='" +
                   params.value +
                   "'" +
                   "alt='" +
@@ -135,31 +139,10 @@ const App = () => {
           />
         </AgGridReact>
       </div>
-      <div style={{"text-align":"right"}} >
-      <span class="piccount"></span><button onClick={refreshData}>Get More Pictures</button>
+      <div style={{textAlign:"right"}} >
+      <span className="piccount"></span><button onClick={refreshData}>Get More Pictures</button>
       </div>
 
-      <p>
-        <a href="https://apod.nasa.gov/apod/archivepix.html" target="_blank">
-          Visit full archive
-        </a>
-      </p>
-      <p>
-        Created with{" "}
-        <a href="https://api.nasa.gov/" target="_blank">
-          NASA's apod API
-        </a>
-        ,{" "}
-        <a href="https://reactjs.org/" target="_blank">
-          ReactJS
-        </a>
-        , and{" "}
-        <a href="https://www.ag-grid.com/" target="_blank">
-          AG Grid (Community Edition)
-        </a>
-        . - <a href="https://github.com/eviltester/ag-grid-react-apod" target="_blank">src @ github</a>
-
-      </p>
     </div>
   );
 };
