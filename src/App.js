@@ -47,8 +47,7 @@ const App = () => {
           setRowData(update);
         }
         })
-      .then(data => {document.querySelectorAll('.piccount').forEach((element)=> element.innerText="");})
-      //.then(nothing => gridApi?.doLayout())
+      .then(document.querySelectorAll('.piccount').forEach((element)=> element.innerText=""))
       .catch(error => {console.log(error);document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");})
       ;
   };
