@@ -28,31 +28,58 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
 
-    <div class="pagefooter">
-      <p>
-        <a href="https://apod.nasa.gov/apod/archivepix.html" target="_blank">
-          Visit full archive
-        </a>
-      </p>
-      <p>
-        Created with
-        <a href="https://api.nasa.gov/" target="_blank">
-          NASA's apod API
-        </a>
-        ,
-        <a href="https://reactjs.org/" target="_blank">
-          ReactJS
-        </a>
-        , and
-        <a href="https://www.ag-grid.com/" target="_blank">
-          AG Grid (Community Edition)
-        </a>
-        . - <a href="https://github.com/eviltester/ag-grid-react-apod" target="_blank">src @ github</a>
+    <div>
+      <div id="header">
+        <h1>Random Nasa Pictures of the Day</h1>
+      </div>
+<!--
+      <ul>
+        <li>Date is sortable</li>
+        <li>Date links to apod.nasa.gov page</li>
+        <li>Click on Image to see original</li>
+        <li>Filter on explanation</li>
+      </ul>
+-->
 
-      </p>
+        <div id="root" style="height:900px; width:100%"></div>
 
+      <div id="footer">
+        <p>
+          <a href="https://apod.nasa.gov/apod/archivepix.html" target="_blank">
+            Visit full archive
+          </a>
+        </p>
+        <p>
+          Created with
+          <a href="https://api.nasa.gov/" target="_blank">
+            NASA's apod API
+          </a>
+          ,
+          <a href="https://reactjs.org/" target="_blank">
+            ReactJS
+          </a>
+          , and
+          <a href="https://www.ag-grid.com/" target="_blank">
+            AG Grid (Community Edition)
+          </a>
+          . - <a href="https://github.com/eviltester/ag-grid-react-apod" target="_blank">src @ github</a>
+
+        </p>
+      </div>
     </div>
   </body>
+
+  <script>
+    function resizeGrid(){
+      var space = (window.innerHeight*0.9) - document.getElementById("header").offsetHeight - document.getElementById("footer").offsetHeight;
+      document.getElementById("root").style.height=parseInt(space)+"px";
+    }
+    window.addEventListener('resize', (event) => {
+      resizeGrid();
+    });
+    window.addEventListener('load', (event) => {
+      resizeGrid();
+    });
+  </script>
 </html>

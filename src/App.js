@@ -23,7 +23,6 @@ const App = () => {
 
 
   const refreshData = e => {
-    //document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Images...");
     gridApi?.showLoadingOverlay();
     fetch(
       "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=10&thumbs=true"
@@ -35,9 +34,21 @@ const App = () => {
           throw new Error("NASA API Issue");
         }
       })
-      .then(data => rowData.concat(data))
-      .then(data => {document.querySelectorAll('.piccount').forEach((element)=> element.innerText="");return data;})
-      .then(rowData => setRowData(rowData))
+      
+      // update the data, rather than refresh
+      .then(data => {
+        if(gridApi){
+          gridApi?.applyTransaction({
+            add: data,
+          })
+        }else{
+          // refresh all data
+          var update= rowData.concat(data);     
+          setRowData(update);
+        }
+        })
+      .then(data => {document.querySelectorAll('.piccount').forEach((element)=> element.innerText="");})
+      //.then(nothing => gridApi?.doLayout())
       .catch(error => {console.log(error);document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");})
       ;
   };
@@ -49,22 +60,15 @@ const App = () => {
 // add loading overlay
 
   return (
-    <div>
-      <h1>Random Nasa Pictures of the Day</h1>
-      {/*
-      <ul>
-        <li>Date is sortable</li>
-        <li>Date links to apod.nasa.gov page</li>
-        <li>Click on Image to see original</li>
-        <li>Filter on explanation</li>
-      </ul>
-      */}
+
+    <div style={{ height: "100%", width: "100%" }}>
       <button onClick={refreshData}>Get More Pictures</button><span className="piccount"></span>
-      <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
+      <div className="ag-theme-alpine" style={{ height: "100%", width: "100%" }}>
         <AgGridReact onGridReady={onGridReady} rowData={rowData}
           pagination={true}
           paginationPageSize={10}
           onColumnResized={onColumnResized}
+          style={{ width: '100%', height: '100%;' }}
         >
           <AgGridColumn
             field="date"
@@ -142,7 +146,6 @@ const App = () => {
       <div style={{textAlign:"right"}} >
       <span className="piccount"></span><button onClick={refreshData}>Get More Pictures</button>
       </div>
-
     </div>
   );
 };
