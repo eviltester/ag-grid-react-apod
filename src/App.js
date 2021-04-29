@@ -23,8 +23,8 @@ const App = () => {
 
 
   const refreshData = e => {
-    document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Images...");
-    
+    //document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Images...");
+    gridApi?.showLoadingOverlay();
     fetch(
       "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=10&thumbs=true"
     )
