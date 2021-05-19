@@ -48,7 +48,11 @@ const App = () => {
         }
         })
       .then(document.querySelectorAll('.piccount').forEach((element)=> element.innerText=""))
-      .catch(error => {console.log(error);document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");})
+      .catch(error => {
+              console.log(error);
+              document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");
+              gridApi?.hideOverlay();
+            })
       ;
   };
 
@@ -56,7 +60,7 @@ const App = () => {
     params.api.resetRowHeights();
   };
 
-// add loading overlay
+
 
   return (
 
@@ -117,8 +121,8 @@ const App = () => {
                 return (
                   "<a href='" +
                   params.value +
-                  "' target='_blank'><!--style='max-width:100%; height:auto' -->" +
-                  "<img style='max-width:100%; height:auto' src='" +
+                  "' target='_blank'>" +
+                  "<img style='max-width:100%; height:auto' onload='imageonload(this)' src='" +
                   params.value +
                   "'" +
                   "alt='" +
