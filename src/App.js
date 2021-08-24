@@ -1,59 +1,67 @@
-import React, { useState, useEffect, memo, useMemo } from "react";
+import React, { useState, useEffect, memo, useMemo, useCallback} from "react";
 import { render } from "react-dom";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
+// need to find the React way to do this as the display effects relied on onload for image to resize images
 
-const VideoImageRenderer = memo(params => {
+const VideoImageRenderer = props => {
 
-  const isImage = (params.node.data.media_type == "image");
-  const isVideo = (params.node.data.media_type == "video");
+  // const resizeImageOnLoad =  useCallback((event) => {
 
-  if(isImage){
+  //   // when image loads, set to the grid height, then set to auto to allow resizing by grid
+  //   const img = event.target;
+  //   //if(img){
+  //     const parent = img.parentElement.parentElement.parentElement;
+  //     //if(img.style && parent){
+  //       img.style.height = parent.height + "px"; // trigger resize in DOM
+  //       img.style.height = '100%'; // then allow resize if the grid changes
+  //     //}
+  //   //}
+  // },[]);
+
+  // onLoad={resizeImageOnLoad}
+  // maxWidth:'100%', 
+  // {{maxWidth:'100%', height:'auto'}}
+  if(props.node.data.media_type=="image"){
     return (
-      <a href={params.value} target='_blank'>
-        <img style={{maxWidth:'100%', height:'auto'}} onload='imageonload(this)'
-        src={params.value} alt={params.node.data.title}/>
+      <a href={props.value} target='_blank'>
+        <img style={{height:'100%', width:'auto'}} src={props.value} alt={props.node.data.title}/>
         </a>  
     )
   }
 
-  if(isVideo){
+  if(props.node.data.media_type=="video"){
     return(
-      <a href={params.value} target='_blank'>Watch Video Now<br/>
-      <img style={{height:'100%'}} src={params.node.data.thumbnail_url}/>
+      <a href={props.value} target='_blank'>Watch Video Now<br/>
+      <img style={{height:'100%'}} src={props.node.data.thumbnail_url}/>
       </a>
     )
   }
 
-  return (params.node.data.media_type);
+  return (props.node.data.media_type);
 
-});
+};
 
-const DateRenderer= memo(params => {
+const DateRenderer= memo(props => {
 
-      const mydateVals = params.value.split("-");
-      var myurl =
-        "https://apod.nasa.gov/apod/" +
-        "ap" +
-        mydateVals[0].substr(-2, 2) +
-        mydateVals[1] +
-        mydateVals[2] +
-        ".html";
+      const mydateVals = props.value.split("-");
+      var myurl = "https://apod.nasa.gov/apod/ap" + mydateVals[0].substr(-2, 2) + mydateVals[1] + mydateVals[2] + ".html";
+
       return (
-        <a href={myurl} target='_blank'>{params.value}</a>
+        <a href={myurl} target='_blank'>{props.value}</a>
       );
 });
 
-const TextRenderer= memo(params => {
+const TextRenderer= props => {
     return (
       <div style={{wordBreak: "normal", lineHeight: "normal"}}><p>
-      {params.value}
+      {props.value}
       </p></div>
     );
-});
+};
 
 
 const App = () => {
@@ -70,7 +78,6 @@ const App = () => {
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);
   }
-
 
 
   const refreshData = e => {
@@ -112,14 +119,15 @@ const App = () => {
   };
 
 
+  // removed resizable until we make better react implementation to avoid flicker and resize artifacts
   const columnDefs = useMemo(
     () => [
-      { field: 'date', width:120, sortable: true, resizable:true, cellRendererFramework: DateRenderer},
+      { field: 'date', width:120, sortable: true, resizable:false, cellRendererFramework: DateRenderer},
       {field: 'explanation', 
             autoHeight:true,
             wrapText:true,
             filter:"agTextColumnFilter",
-            resizable:true,
+            resizable:false,
             flex:"2",
             cellRendererFramework: TextRenderer
           },
@@ -138,7 +146,7 @@ const App = () => {
           paginationPageSize={10}
           onColumnResized={onColumnResized}
           style={{ width: '100%', height: '100%;' }}
-          reactUi={true}
+          reactUi={false}
           columnDefs={columnDefs}
         >
 

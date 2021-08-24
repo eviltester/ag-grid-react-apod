@@ -72,15 +72,6 @@
 
   <script>
 
-    function imageonload(img){
-
-      // when image loads, set to the grid height, then set to auto to allow resizing by grid
-
-      var parent = img.parentElement.parentElement.parentElement;
-      img.style.height = parent.height + "px";
-      img.style.height = '100%';
-    }
-
     function getIdealGridHeight(){
       return (window.innerHeight*0.9) - document.getElementById("header").offsetHeight - document.getElementById("footer").offsetHeight;
     }
