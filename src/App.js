@@ -5,9 +5,7 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-// need to find the React way to do this as the display effects relied on onload for image to resize images
-
-const VideoImageRenderer = props => {
+const VideoImageRenderer = memo(props => {
 
   const[imageStyle, setImageStyle] = useState({height:props.node.rowHeight + 'px', width:'auto'});
 
@@ -16,6 +14,7 @@ const VideoImageRenderer = props => {
   }
 
   // if row height changes then amend the image size
+  // TODO: when cell size adjustment added...once a px value has been set, we then want to amend it to height 100% width:auto to let the browser handle it
   useEffect(()=>{
     setImageBasedOnRowHeight();
   },[props.node.rowHeight])
@@ -37,9 +36,13 @@ const VideoImageRenderer = props => {
     )
   }
 
-  return (props.node.data.media_type);
+  return (
+    <a href={props.value} target='_blank'>
+      {props.node.data.media_type}
+    </a>
+  );
 
-};
+});
 
 const DateRenderer= memo(props => {
 

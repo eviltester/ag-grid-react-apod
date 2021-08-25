@@ -72,6 +72,7 @@
 
   <script>
 
+    
     function getIdealGridHeight(){
       return (window.innerHeight*0.9) - document.getElementById("header").offsetHeight - document.getElementById("footer").offsetHeight;
     }
@@ -79,7 +80,9 @@
       var space = getIdealGridHeight();
       document.getElementById("root").style.height=parseInt(space)+"px";
     }
+    
     var initialGridResetAttempts=5;
+
     function setGridHeightUntilItTakes(){
       var heightCalc = document.getElementById("header").offsetHeight + document.getElementById("footer").offsetHeight + 
                       document.getElementById("root").offsetHeight; 
