@@ -9,26 +9,22 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 const VideoImageRenderer = props => {
 
-  // const resizeImageOnLoad =  useCallback((event) => {
+  const[imageStyle, setImageStyle] = useState({height:props.node.rowHeight + 'px', width:'auto'});
 
-  //   // when image loads, set to the grid height, then set to auto to allow resizing by grid
-  //   const img = event.target;
-  //   //if(img){
-  //     const parent = img.parentElement.parentElement.parentElement;
-  //     //if(img.style && parent){
-  //       img.style.height = parent.height + "px"; // trigger resize in DOM
-  //       img.style.height = '100%'; // then allow resize if the grid changes
-  //     //}
-  //   //}
-  // },[]);
+  const setImageBasedOnRowHeight = ()=>{
+    setImageStyle(({height:props.node.rowHeight + 'px', width:'auto'}));
+  }
 
-  // onLoad={resizeImageOnLoad}
-  // maxWidth:'100%', 
-  // {{maxWidth:'100%', height:'auto'}}
-  if(props.node.data.media_type=="image"){
+  // if row height changes then amend the image size
+  useEffect(()=>{
+    setImageBasedOnRowHeight();
+  },[props.node.rowHeight])
+
+  // TODO: combine these by calculating the variable parts early and adding to state based on props
+  if(props.node.data.media_type=="image"){    
     return (
       <a href={props.value} target='_blank'>
-        <img style={{height:'100%', width:'auto'}} src={props.value} alt={props.node.data.title}/>
+        <img style={imageStyle} src={props.value} loading='lazy' alt={props.node.data.title} onLoad={setImageBasedOnRowHeight}/>
         </a>  
     )
   }
@@ -36,7 +32,7 @@ const VideoImageRenderer = props => {
   if(props.node.data.media_type=="video"){
     return(
       <a href={props.value} target='_blank'>Watch Video Now<br/>
-      <img style={{height:'100%'}} src={props.node.data.thumbnail_url}/>
+      <img style={imageStyle} src={props.node.data.thumbnail_url} loading='lazy' alt={props.node.data.title} onLoad={setImageBasedOnRowHeight}/>
       </a>
     )
   }
@@ -55,13 +51,13 @@ const DateRenderer= memo(props => {
       );
 });
 
-const TextRenderer= props => {
+const TextRenderer= memo(props => {
     return (
       <div style={{wordBreak: "normal", lineHeight: "normal"}}><p>
       {props.value}
       </p></div>
     );
-};
+});
 
 
 const App = () => {
@@ -70,6 +66,7 @@ const App = () => {
 
   const [rowData, setRowData] = useState([]);
 
+  // load data from api when grid first rendered
   useEffect(() => {
     refreshData();
   }, []);
@@ -131,7 +128,7 @@ const App = () => {
             flex:"2",
             cellRendererFramework: TextRenderer
           },
-          {field: "url", flex:1, headerName:"Image", cellRendererFramework: VideoImageRenderer}
+      {field: "url", flex:1, headerName:"Image", cellRendererFramework: VideoImageRenderer}
     ],
     []
   );
@@ -146,11 +143,9 @@ const App = () => {
           paginationPageSize={10}
           onColumnResized={onColumnResized}
           style={{ width: '100%', height: '100%;' }}
-          reactUi={false}
+          reactUi={true}
           columnDefs={columnDefs}
         >
-
-
         </AgGridReact>
       </div>
       <div style={{textAlign:"right"}} >
