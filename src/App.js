@@ -63,11 +63,6 @@ const App = () => {
 
   const [rowData, setRowData] = useState(); // defaulting to [] would remove the loading overlay
 
-
-
-
-
-
   const refreshData = () => {
     gridApi?.showLoadingOverlay();
     fetch(
