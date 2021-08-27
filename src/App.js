@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo, useMemo, useCallback} from "react";
+import React, { useState, useEffect, useMemo, useCallback} from "react";
 import { render } from "react-dom";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
@@ -63,18 +63,12 @@ const App = () => {
 
   const [rowData, setRowData] = useState(); // defaulting to [] would remove the loading overlay
 
-  // load data from api when grid first rendered
-  useEffect(() => {
-    refreshData();
-  }, []);
-
-  function onGridReady(params) {
-    setGridApi(params.api);
-    setGridColumnApi(params.columnApi);
-  }
 
 
-  const refreshData = e => {
+
+
+
+  const refreshData = () => {
     gridApi?.showLoadingOverlay();
     fetch(
       "https://api.nasa.gov/planetary/apod?api_key=xE8H0ER9bxzelj6850UugbXcs5wi5cgEq1tZcvSv&count=10&thumbs=true"
@@ -108,8 +102,16 @@ const App = () => {
       ;
   };
 
+  function onGridReady(params) {
+    setGridApi(params.api);
+    setGridColumnApi(params.columnApi);
+    // load data from api when grid first rendered
+    refreshData();
+  }
+
+    
   const onColumnResized = (params) => {
-    params.api.resetRowHeights();
+    //params.api.resetRowHeights();
   };
 
 
