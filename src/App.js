@@ -78,17 +78,17 @@ const App = () => {
       
       // update the data, rather than refresh
       .then(data => {
-        if(gridApi){
-          gridApi?.applyTransaction({
-            add: data,
-          })
-        }else{
-          // refresh all data and handle initial undefined state
-          var update= rowData ? rowData.concat(data) : [].concat(data);     
-          setRowData(update);
-        }
+          if(gridApi){
+            gridApi?.applyTransaction({
+              add: data,
+            })
+          }else{
+            // refresh all data and handle initial undefined state
+            var update= rowData ? rowData.concat(data) : [].concat(data);     
+            setRowData(update);
+          }
+          document.querySelectorAll('.piccount').forEach((element)=> element.innerText="");
         })
-      .then(document.querySelectorAll('.piccount').forEach((element)=> element.innerText=""))
       .catch(error => {
               console.log(error);
               document.querySelectorAll('.piccount').forEach((element)=> element.innerText="Loading Error: Try Again");
@@ -110,8 +110,7 @@ const App = () => {
   };
 
 
-  const columnDefs = useMemo(
-    () => [
+  const columnDefs = useMemo(() => [
       { field: 'date', width:120, sortable: true, resizable:false, cellRendererFramework: DateRenderer},
       {field: 'explanation', 
             autoHeight:true,
@@ -124,9 +123,7 @@ const App = () => {
             cellStyle: {wordBreak: "normal", lineHeight: "1.5em"}
           },
       {field: "url", flex:1, headerName:"Image", autoHeight:false, cellRendererFramework: VideoImageRenderer}
-    ],
-    []
-  );
+    ],[]);
 
   return (
 
