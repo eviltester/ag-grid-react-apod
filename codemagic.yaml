@@ -1,1 +1,7 @@
-
+workflows:
+  my-workflow:
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+      - name: Run tests
+        script: npm test
